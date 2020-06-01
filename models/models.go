@@ -3,8 +3,8 @@ package models
 import (
 	"github.com/gin-gonic/gin"
 	"github.com/jinzhu/gorm"
-	"time"
 	_ "github.com/jinzhu/gorm/dialects/mysql"
+	"time"
 )
 var DB *gorm.DB
 
@@ -12,10 +12,9 @@ var DB *gorm.DB
 func migration() {
 	// 自动迁移模式
 	DB.Set("gorm:table_options", "charset=utf8mb4").
-		AutoMigrate(&User{}).
-		AutoMigrate(&Video{})
+		AutoMigrate(&Location{},&Badpic{},&Goodpic{})
 }
-func Database(connString string) {
+func Database(connString string) *gorm.DB{
 	db, err := gorm.Open("mysql", connString) //连接数据库
 	db.LogMode(true)
 	if err != nil {
@@ -30,9 +29,28 @@ func Database(connString string) {
 	db.DB().SetMaxOpenConns(100)
 	db.DB().SetConnMaxLifetime(time.Second * 30)
 	DB = db
-	migration()
+	//migration()
+	return DB
 }
-type User struct{
-	gorm.Model// 包含id 创建 修改 删除时间
-	username string
-}// 用户模型
+type Location struct {
+	ID int64
+	Name string
+}
+type Badpic struct {
+	ID int64 `gorm:"PRIMARY_KEY;auto_increment"`
+	PicPath string
+	LocationId int
+	ShootTime string
+	RuleType int
+	Rollback bool
+}
+
+type Goodpic struct {
+	ID int64 `gorm:"PRIMARY_KEY;auto_increment"`
+	PicPath string
+	LocationId int
+	ShootTime string
+	RuleType int
+	Rollback bool
+}
+
