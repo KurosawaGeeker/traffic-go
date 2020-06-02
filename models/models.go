@@ -29,28 +29,42 @@ func Database(connString string) *gorm.DB{
 	db.DB().SetMaxOpenConns(100)
 	db.DB().SetConnMaxLifetime(time.Second * 30)
 	DB = db
-	//migration()
+	migration()
 	return DB
 }
 type Location struct {
 	ID int64
 	Name string
+	Badpics []Badpic	`gorm:"ForeignKey:LocationId"`
+	Goodpics []Goodpic `gorm:"ForeignKey:LocationId"`
 }
 type Badpic struct {
-	ID int64 `gorm:"PRIMARY_KEY;auto_increment"`
-	PicPath string
-	LocationId int
-	ShootTime string
-	RuleType int
-	Rollback bool
+	ID int64 `gorm:"PRIMARY_KEY;auto_increment"` //id
+	PicPath string	//图片路径 pic_path
+	LocationId int 	`gorm:"column:location_id;"`//违法地点外键 location_id
+	LicKind string
+	ShootInstitution string
+	Backup string
+	ShootTime string  //违法时间 shoot_time
+	RuleType string  	//违规类型 rule_type
+	Rollback bool 	// 是否经过回滚 rollback
+	LicPlate string 	//车牌号码 lic_plate
+	Direct string  //方向 direct
+	Status bool //校对1 未校对 0 status
 }
 
 type Goodpic struct {
-	ID int64 `gorm:"PRIMARY_KEY;auto_increment"`
-	PicPath string
-	LocationId int
-	ShootTime string
-	RuleType int
-	Rollback bool
+	ID int64 `gorm:"PRIMARY_KEY;auto_increment"` //id
+	PicPath string	//图片路径 pic_path
+	LocationId int 	`gorm:"column:location_id;"`//违法地点外键 location_id
+	LicKind string
+	ShootInstitution string
+	Backup string
+	ShootTime string  //违法时间 shoot_time
+	RuleType string  	//违规类型 rule_type
+	Rollback bool 	// 是否经过回滚 rollback
+	LicPlate string 	//车牌号码 lic_plate
+	Direct string  //方向 direct
+	Status bool //校对1 未校对 0 status
 }
 
