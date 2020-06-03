@@ -1,0 +1,12 @@
+[server]
+mode = "debug"
+port = 8081
+read_timeout = 60
+write_timeout = 60
+
+[mysql]
+user = "root"
+passwd = "xxxxx"
+host = "localhost"
+port = 3306
+name = "traffic"
