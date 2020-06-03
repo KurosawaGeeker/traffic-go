@@ -31,10 +31,6 @@ func InitDB() *gorm.DB {
 	//打开
 	db.DB().SetMaxOpenConns(100)
 	db.DB().SetConnMaxLifetime(time.Second * 30)
-	badpic := Badpic{}
-	db.Model(&badpic).Related(&badpic.Location)
-	goodpic := Goodpic{}
-	db.Model(&goodpic).Related(&goodpic.Location)
 
 	DB = db
 	migration()

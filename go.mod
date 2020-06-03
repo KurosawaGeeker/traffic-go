@@ -8,6 +8,7 @@ require (
 	github.com/gin-gonic/gin v1.6.3
 	github.com/go-yaml/yaml v2.1.0+incompatible // indirect
 	github.com/golang/protobuf v1.4.2
+	github.com/jinzhu/copier v0.0.0-20190924061706-b57f9002281a
 	github.com/jinzhu/gorm v1.9.12
 	github.com/microcosm-cc/bluemonday v1.0.2 // indirect
 	github.com/russross/blackfriday v2.0.0+incompatible // indirect
