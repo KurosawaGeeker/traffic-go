@@ -1,0 +1,11 @@
+syntax = "proto3";
+package protoc;
+
+message Pics {
+    message Picture {
+        int32 id = 1;
+        string location = 2;
+        bytes pic_data = 3;
+    }
+    repeated Picture pic = 1;
+}

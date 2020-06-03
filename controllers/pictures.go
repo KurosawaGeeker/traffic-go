@@ -10,43 +10,26 @@ import (
 	"github.com/jinzhu/copier"
 )
 
+//GetPicturesServices 获取图片接口参数
 type GetPicturesServices struct {
 	Type   string `form:"type"`
 	Number int    `form:"number"`
 }
+
+//SetPicturesServices 设置图片接口参数
 type SetPicturesServices struct {
 	IsValid bool `json:"is_valid"`
 	ID      int  `json:"id"`
 }
 
-/*
-func GetPictures(c *gin.Context) {
-	var service GetPicturesServices
-	var res []struct {
-		ID       int             `json:"id"`
-		PicPath  string          `json:"pic_path"`
-		Location models.Location `json:"location"`
-	}
-	if err := c.ShouldBindJSON(&service); err != nil {
-		c.JSON(http.StatusBadRequest, gin.H{"status": 500, "error": err.Error()})
-	} else {
-		models.DB.Table("badpics").Where("status = 0 and rule_type = ?", service.Type).Limit(service.Number).
-			Select("id, pic_path").Preload("Location").Find(&res)
-		c.JSON(http.StatusOK, gin.H{
-			"status":   200,
-			"pictures": res,
-		})
-	}
-}
-*/
-
+//GetPictures 获取图片接口
 func GetPictures(c *gin.Context) {
 	var service GetPicturesServices
 	var badpics []models.Badpic
 	var protocResp protoc.Pics
 
 	if err := c.ShouldBindQuery(&service); err != nil {
-		c.JSON(http.StatusBadRequest, gin.H{"status": 500, "error": err.Error()})
+		c.JSON(http.StatusOK, gin.H{"status": 400, "error": err.Error()})
 		return
 	}
 
@@ -55,7 +38,7 @@ func GetPictures(c *gin.Context) {
 	for _, pic := range badpics {
 		buffer, err := ioutil.ReadFile("static/" + pic.PicPath)
 		if err != nil {
-			c.JSON(http.StatusBadRequest, gin.H{"status": 500, "error": err.Error()})
+			c.JSON(http.StatusOK, gin.H{"status": 500, "error": err.Error()})
 			return
 		}
 		protocResp.Pic = append(protocResp.Pic, &protoc.Pics_Picture{
@@ -65,6 +48,7 @@ func GetPictures(c *gin.Context) {
 
 }
 
+//SetPicture 设置图片接口
 func SetPicture(c *gin.Context) {
 	var service SetPicturesServices
 	var badpic models.Badpic
@@ -87,6 +71,6 @@ func SetPicture(c *gin.Context) {
 			c.JSON(http.StatusOK, gin.H{"status": 500, "error": err.Error()})
 			return
 		}
-		c.JSON(http.StatusOK, gin.H{"status": 200, "is_ok": true})
 	}
+	c.JSON(http.StatusOK, gin.H{"status": 200, "is_ok": true})
 }
