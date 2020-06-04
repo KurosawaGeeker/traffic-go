@@ -1,6 +1,7 @@
 package router
 
 import (
+	"net/http"
 	"traffic-go/controllers"
 
 	"github.com/gin-gonic/gin"
@@ -8,6 +9,8 @@ import (
 
 func InitRouter() *gin.Engine {
 	router := gin.Default()
+	router.StaticFS("/img", http.Dir("./static/img"))
+
 	v1 := router.Group("api/v1")
 	{
 		v1.POST("/records", controllers.GetRecords)

@@ -9,6 +9,7 @@ host = "http://localhost:8081" or os.environ["SERVICE_URL"]
 url = host + "/api/v1/pictures"
 
 def getDataFromDB(type_:str, number:int):
+    # 未约定错误处理，暂未处理网络错误
     resp = requests.get(url, params={"type": type_, "number": number})
     buffer = resp.content
     pics = pics_pb2.Pics()
@@ -22,5 +23,12 @@ def sendDataToDB(key:int, is_valid:bool):
         "id": key,
         "is_valid": is_valid
     }
-    resp = requests.post(url, json=data)
-    print(json.loads(resp.text))
+    try:
+        resp = requests.post(url, json=data)
+        resp_json = json.loads(resp.text)
+        if resp_json["status"] == 200 and resp_json["is_ok"] == True:
+            return True
+        else:
+            return False
+    except:
+        return False
