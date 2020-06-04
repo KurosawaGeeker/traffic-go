@@ -15,7 +15,7 @@ type query struct {
 	TimeNew  int64  `json:"time_new"`
 	Location string `json:"location"`
 	Page int `json:"page"`
-	PageSize int `json:"page_size"`
+	PageSize int `json:"page_size"'`
 }
 
 type ret struct {
@@ -48,12 +48,14 @@ func GetRecords(c *gin.Context) {
 			models.DB.Select("id").Where("name = ?", json.Location).First(&location)
 			locationID := location.ID //查询location_id
 			fmt.Print("location_id:",locationID)
+
 			models.DB.Limit(page_size).Offset((page-1)*page_size).Where("location_id = ? AND shoot_time BETWEEN ? AND ?",locationID,timeNew,timeLast).Find(&badpics).Count(&total)
 		}else{//location存在则查 否则不查
 			//models.DB.Where("shoot_time BETWEEN ? AND ?",time_new,time_last).Find(&badpics).Count(&total)
 			models.DB.Limit(page_size).Offset((page-1)*page_size).Find(&badpics).Count(&total)
 		}
 		data := &ret{Pics: []pic{}}
+
 		for i:=0;i<len(badpics);i++ {
 			var loctemp models.Location
 			models.DB.Select("name").Where("id = ?", badpics[i].LocationID).First(&loctemp)
@@ -66,9 +68,7 @@ func GetRecords(c *gin.Context) {
 				Direct:badpics[i].Direct,
 			})
 		}
-		fmt.Print("data:",data)
 		c.JSON(http.StatusOK,gin.H{"data":data,"status":200,"total":total})
-
 		return
 	}
 }
