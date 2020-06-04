@@ -6,7 +6,7 @@ write_timeout = 60
 
 [mysql]
 user = "root"
-passwd = "114514"
+passwd = "xxxxx"
 host = "localhost"
 port = 3306
 name = "traffic"
