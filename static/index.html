@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>图片展示</title>
+    <link rel="stylesheet" href="index.css" />
+</head>
+<body>
+    <header class="header">
+        <div><img src="img/timg.jpg" class="img"></div>
+        <div style="margin-right: auto;">智慧交通</div>
+        </div>
+        <form method="GET" id="form1">
+            地点：
+            <input name="location" required/>
+            <!--<input name="address" list="address" required/>
+            <datalist id="address">
+                <option name="location" value="华科">华科</option>
+                <option name="location" value="武大">武大</option>
+            </datalist>-->
+            开始时间：
+            <input type="date" name="time_new" value="2019-01-01" required/>
+            结束时间：
+            <input type="date" name="time_last" id="timeOver" required/>
+            <!--<input type="submit" />-->
+            <input type="image" src="img/sousuo-.png" name='search' class="search" id="search" onclick="return handleSubmit()">
+        </form>
+        </div>
+    </header>
+    <div class="container">
+        <ul id="ulFather"></ul>
+    </div>
+    <div class="box" id="box"></div>  
+    <script src="jquery-1.11.1.min.js"></script>
+    
+    <script src="paging.js"></script>
+    <script src="main.js"></script>
+</body>
+
+</html>
