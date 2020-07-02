@@ -9,13 +9,17 @@ host = "http://localhost:8081" or os.environ["SERVICE_URL"]
 url = host + "/api/v1/pictures"
 
 def getDataFromDB(type_:str, number:int):
-    # 未约定错误处理，暂未处理网络错误
+    # 未约定错误返回，未作处理
     resp = requests.get(url, params={"type": type_, "number": number})
     buffer = resp.content
     pics = pics_pb2.Pics()
-    pics.ParseFromString(buffer)
-    # 此处buffer无法释放，会产生内存泄漏，仅供demo使用
-    return [(pic.id, pic.location, Image.open(BytesIO(pic.pic_data))) for pic in pics.pic]
+    try:
+        pics.ParseFromString(buffer)
+        # 此处buffer无法释放，会产生内存泄漏，仅供demo使用
+        return [(pic.id, pic.location, Image.open(BytesIO(pic.pic_data))) for pic in pics.pic]
+    except:
+        resp_json = json.loads(buffer)
+        raise RuntimeError(resp_json["error"])
 
 
 def sendDataToDB(key:int, is_valid:bool):

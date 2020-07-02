@@ -63,11 +63,14 @@ func SetPicture(c *gin.Context) {
 		c.JSON(http.StatusOK, gin.H{"status": 404, "error": "Not Found"})
 		return
 	}
-	models.DB.Model(&badpic).Update("status", true)
+	models.DB.Model(&badpic).Update("rollback", true)
 	if service.IsValid {
+		models.DB.Model(&badpic).Update("status", true)
 		copier.Copy(&goodpic, &badpic)
 		goodpic.ID = 0
-		if err := models.DB.Delete(&badpic).Create(&goodpic).Error; err != nil {
+		goodpic.Rollback = true
+		goodpic.Status = true
+		if err := models.DB.Create(&goodpic).Error; err != nil {
 			c.JSON(http.StatusOK, gin.H{"status": 500, "error": err.Error()})
 			return
 		}
