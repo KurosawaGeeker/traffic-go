@@ -37,8 +37,14 @@ type Goodpic struct {
 	Location         Location
 }
 
+type User struct{
+	ID	int64 `gorm:"PRIMARY_KEY;auto_increment"`
+	Username string //用户名
+	Password string //密码
+}
+
 func migration() {
 	// 自动迁移模式
 	DB.Set("gorm:table_options", "charset=utf8mb4").
-		AutoMigrate(&Location{}, &Badpic{}, &Goodpic{})
+		AutoMigrate(&Location{}, &Badpic{}, &Goodpic{}，&User{})
 }
